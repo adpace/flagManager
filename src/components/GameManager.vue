@@ -29,24 +29,24 @@
       <b-card id="score-buttons-card">
         <b-row>
           <b-col>
-            <div class="btn-td">
+            <div class="btn-td" @click="scoreHome(6)">
               6
             </div>
-            <div class="btn-extra-pt">
+            <div class="btn-extra-pt" @click="scoreHome(1)">
               1
             </div>
-            <div class="btn-two-pt">
+            <div class="btn-two-pt" @click="scoreHome(2)">
               2
             </div>
           </b-col>
           <b-col>
-            <div class="btn-td">
+            <div class="btn-td" @click="scoreAway(6)">
               6
             </div>
-            <div class="btn-extra-pt">
+            <div class="btn-extra-pt" @click="scoreAway(1)">
               1
             </div>
-            <div class="btn-two-pt">
+            <div class="btn-two-pt" @click="scoreAway(2)">
               2
             </div>
           </b-col>
@@ -58,14 +58,26 @@
 </template>
 
 <script>
-
   export default {
-    name      : "game-manager",
+    name      : 'game-manager',
     components: {},
-    data() {
-      return {
-        homeScore: 46,
-        awayScore: 0
+    data () {
+      return {}
+    },
+    computed  : {
+      homeScore () {
+        return this.$store.getters.getHomeScore
+      },
+      awayScore () {
+        return this.$store.getters.getAwayScore
+      }
+    },
+    methods   : {
+      scoreHome (points) {
+        this.$store.commit('incrementHomeScore', points)
+      },
+      scoreAway (points) {
+        this.$store.commit('incrementAwayScore', points)
       }
     }
   }
@@ -78,13 +90,6 @@
   /*HEX COLOR: #A6192E;*/
   /*GRAY */
   /*HEX COLOR: #A2AAAD;*/
-  /*.game-screen {*/
-  /*padding: 0;*/
-  /*margin: 0;*/
-  /*background: #A6192E;*/
-  /*color: #fff;*/
-  /*height: 1000px;*/
-  /*}*/
 
   .game-screen {
     background: #A6192E;
@@ -94,7 +99,7 @@
     font-size: 3.5rem;
     margin-top: -.25rem;
     line-height: 0.6;
-    font-family: 'Ubuntu', 'sans-serif'!important;
+    font-family: 'Ubuntu', 'sans-serif' !important;
   }
 
   .btn-td {
@@ -103,7 +108,7 @@
     background: #A2AAAD;
     font-size: 8rem;
     font-weight: 900;
-    font-family: 'Ubuntu', 'sans-serif'!important;
+    font-family: 'Ubuntu', 'sans-serif' !important;
     text-align: center;
     margin: 1rem;
     border: solid 3px #000;
@@ -125,7 +130,7 @@
     background: #A2AAAD;
     font-size: 4rem;
     font-weight: 900;
-    font-family: 'Ubuntu', 'sans-serif'!important;
+    font-family: 'Ubuntu', 'sans-serif' !important;
     text-align: center;
     margin: 1rem;
     border: solid 3px #000;
@@ -155,13 +160,13 @@
     -webkit-border-radius: 30px;
     -moz-border-radius: 30px;
     border-radius: 30px;
-    font-family: 'Ubuntu', 'sans-serif'!important;
+    font-family: 'Ubuntu', 'sans-serif' !important;
 
   }
 
   .score-box-title {
     padding-bottom: 1rem;
-    font-family: 'Ubuntu', 'sans-serif'!important;
+    font-family: 'Ubuntu', 'sans-serif' !important;
   }
 
   #score-board-card {
@@ -173,18 +178,21 @@
   #score-buttons-card {
     background: #001E62;
     -webkit-text-stroke: 1px black;
+    -webkit-border-radius: 0 0 15px 15px;
+    -moz-border-radius: 0 0 15px 15px;
+    border-radius: 0 0 15px 15px;
   }
 
   #timer-button {
     width: 85vw;
     margin-top: 2rem;
     font-size: 3rem;
-    font-family: 'Ubuntu', 'sans-serif'!important;
+    font-family: 'Ubuntu', 'sans-serif' !important;
     font-weight: 700;
     color: #090;
     background: #fff;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
   }
 </style>

@@ -3,15 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-// import BootstrapVue from 'bootstrap-vue'
 import Vuex from 'vuex'
 import Axios from 'axios'
 import BootstrapVue from 'bootstrap-vue'
+import { store } from './store/store'
 
 import('bootstrap-vue/dist/bootstrap-vue.css')
 
-
-Vue.use(BootstrapVue);
+Vue.use(BootstrapVue)
 Vue.use(Vuex)
 
 window.axios = Axios
@@ -20,8 +19,9 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  store     : store,
+  el        : '#app',
   router,
-  components: { App },
-  template: '<App/>'
+  components: {App},
+  template  : '<App/>'
 })
