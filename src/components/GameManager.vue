@@ -5,11 +5,14 @@
         <b-row>
           <b-col class="score-box-title">
             <div>
-              <h1 class="text-uppercase">home</h1>
+              <h1 class="text-uppercase m-0 p-0">home</h1>
             </div>
           </b-col>
           <b-col>
-            <span id="time-display" class="text-white">20:00</span>
+            <span id="time-display" class="text-white">
+              <!--{{ minutes | two_digits }}:{{ seconds | two_digits }}-->
+              20:00
+            </span>
           </b-col>
           <b-col class="score-box-title">
             <div>
@@ -28,7 +31,7 @@
       </b-card>
       <b-card id="score-buttons-card">
         <b-row>
-          <b-col>
+          <b-col style="padding: 0 -15px;">
             <div class="btn-td" @click="scoreHome(6)">
               6
             </div>
@@ -39,7 +42,7 @@
               2
             </div>
           </b-col>
-          <b-col>
+          <b-col style="padding: 0 -15px;">
             <div class="btn-td" @click="scoreAway(6)">
               6
             </div>
@@ -52,7 +55,17 @@
           </b-col>
         </b-row>
       </b-card>
-      <b-btn id="timer-button" class="text-uppercase">start</b-btn>
+      <b-btn v-if="buttonState === 'start'" id="timer-button-start" class="timer-button text-uppercase">start</b-btn>
+      <b-btn v-if="buttonState === 'stop'" id="timer-button-stop" class="timer-button text-uppercase">stop</b-btn>
+      <b-row  style="padding: 0 -15px;">
+        <b-col class="text-right" style="padding: 0 -15px;">
+          <b-btn v-if="buttonState === 'other'" id="timer-button-12" class="timer-button text-uppercase">12</b-btn>
+        </b-col>
+        <b-col class="text-left" style="padding: 0 -15px;">
+          <b-btn v-if="buttonState === 'other'" id="timer-button-20" class="timer-button text-uppercase">20</b-btn>
+        </b-col>
+      </b-row>
+      <b-btn v-if="buttonState === 'other'" id="timer-button-other" class="timer-button text-uppercase">other</b-btn>
     </b-container>
   </div>
 </template>
@@ -62,14 +75,28 @@
     name      : 'game-manager',
     components: {},
     data () {
-      return {}
+      return {
+        now        : Math.trunc((new Date()).getTime() / 1000),
+        twenty     : 20 * 60 * 1000,
+        twelve     : 12 * 60 * 1000,
+        buttonState: 'other'
+      }
     },
     computed  : {
+      halfEndTime () {
+        return this.$store.getters.getHalfEndTime
+      },
       homeScore () {
         return this.$store.getters.getHomeScore
       },
       awayScore () {
         return this.$store.getters.getAwayScore
+      },
+      seconds () {
+        return (this.halfEndTime - this.now) % 60
+      },
+      minutes () {
+        return Math.trunc((this.date - this.now) / 60) % 60
       }
     },
     methods   : {
@@ -78,6 +105,12 @@
       },
       scoreAway (points) {
         this.$store.commit('incrementAwayScore', points)
+      },
+      setHalfLength (time) {
+        this.$store.commit('setHalfLength', time)
+      },
+      setTimerButton (name) {
+        this.buttonState = name
       }
     }
   }
@@ -183,16 +216,64 @@
     border-radius: 0 0 15px 15px;
   }
 
-  #timer-button {
-    width: 85vw;
+  .timer-button {
     margin-top: 2rem;
     font-size: 3rem;
     font-family: 'Ubuntu', 'sans-serif' !important;
     font-weight: 700;
-    color: #090;
-    background: #fff;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+    -webkit-box-shadow: inset 0px 0px 16px 2px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: inset 0px 0px 16px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px 0px 16px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  #timer-button-start {
+    width: 95vw;
+    color: #090;
+    background: #fff;
+  }
+
+  #timer-button-stop {
+    width: 95vw;
+    color: #900;
+    background: #fff;
+  }
+
+  #timer-button-20 {
+    width: 97.5%;
+    color: rgb(0, 153, 220);
+    margin: 2rem 0 .1rem -9px;
+    background: #fff;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+  }
+
+  #timer-button-12 {
+    width: 97.5%;
+    margin: 2rem -9px .1rem 0;
+    color: rgb(0, 153, 220);
+    background: #fff;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+  }
+
+  #timer-button-other {
+    width: 85vw;
+    color: rgb(0, 153, 220);
+    background: #fff;
+    margin-bottom: 5rem;
+    margin-top: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 0;
   }
 </style>

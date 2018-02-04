@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import moment from 'moment'
 
 Vue.use(Vuex)
+Vue.use(moment)
 
 export const store = new Vuex.Store({
   state    : {
@@ -9,31 +11,40 @@ export const store = new Vuex.Store({
     awayScore           : 0,
     timeRemaining       : 0,
     halfLength          : 0,
+    halfEndTime      : {},
     showHomeTitlePopover: false,
     showAwayTitlePopover: false,
     showGameClockPopover: false,
-    showStartButton     : true
+    showTimerSetupButton: true,
+    showStartButton     : false,
+    showStopButton      : false
   },
   getters  : {
-    getState : state => {
-      console.log(state);
+    getState               : state => {
+      console.log(state)
       return state
     },
     getHomeScore           : state => {
       return state.homeScore
     },
-    getAwayScore           : state   => {
+    getAwayScore           : state => {
       return state.awayScore
     },
-    getTimeRemaining       : state   => {
+    getTimeRemaining       : state => {
       return state.timeRemaining
     },
-    getShowHomeTitlePopover: state   => {
+    getShowHomeTitlePopover: state => {
       return state.showHomeTitlePopover
     },
-    getShowAwayTitlePopover: state   => {
+    getShowAwayTitlePopover: state => {
       return state.showAwayTitlePopover
     },
+    getHalfEndTime: state => {
+      return state.halfEndTime
+    },
+    getHalfLength: state => {
+      return state.halfLength
+    }
   },
   mutations: {
     incrementHomeScore: (state, points) => {
@@ -47,7 +58,25 @@ export const store = new Vuex.Store({
       console.log(state + ' - ' + points)
       state.awayScore += points
       console.log('increment away score committed to state')
+    },
+    setHalfEndTime : (state, time) => {
+      console.log('setHalfEndTime commit received...')
+      state.halfEndTime = time
+      console.log('setHalfEndTime committed to state...');
+    },
+    setHalfLength : (state, time) => {
+      console.log('setHalfLength commit received...')
+      state.halfLength = time
+      console.log('setHalfLength committed to state...');
     }
   },
-  actions  : {}
+  actions  : {
+    startClock : (context) => {
+
+    }
+    // startClock : (context) => {
+    //   now: Math.trunc((new Date()).getTime() / 1000)
+    //   x``
+    // }
+  }
 })
